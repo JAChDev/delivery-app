@@ -1,0 +1,9 @@
+.home-container {
+    background: linear-gradient(110deg, #ffffff 0%, #ffffff 40%, #0b79b9 60%, #0b79b9 100%);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}

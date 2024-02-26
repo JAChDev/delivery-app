@@ -1,0 +1,28 @@
+<div class="login-container">
+    <div class="container">
+        <div class="row">
+            <div class="col brand-container" [ngClass]="{ 'fadeOutRight': submitted }">
+              <h1>Welcome</h1>
+            </div>
+            <div class="col">
+              <div class="login-form" [ngClass]="{ 'fadeOutLeft': submitted }">
+                  <form (ngSubmit)="login()" #loginForm="ngForm">
+                    <div class="form-group">
+                      <label>User</label>
+                      <input type="text" class="form-control" placeholder="E.g: Hahn" [(ngModel)]="username" name="username" required>
+                    </div>
+            
+                    <div class="form-group">
+                      <label>Password</label>
+                      <input type="password" class="form-control" placeholder="Set your password" [(ngModel)]="password" name="password"required>
+                    </div>
+            
+                    <div class="login-button">
+                      <button type="submit" class="btn btn-primary btn-block" [disabled]="!loginForm.form.valid">Login</button>
+                    </div>
+                  </form>
+                </div>
+            </div>
+          </div>
+    </div>
+</div>
