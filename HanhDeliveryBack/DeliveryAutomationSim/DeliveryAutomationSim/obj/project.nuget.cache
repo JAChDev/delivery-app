@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "P3PwLa3Du1t/hOhFuMBYWwHuvaplV3Is/oSDVdTrqzTnp8fCOx4+S9oZJxB2tw+kdcDyc1dbAG5e/YDeXEOH4g==",
+  "dgSpecHash": "msRCrDTPlkUw6INFQNV/RvJWuKzxyCinCkmc/PiqQtLs9u6XVJU1O6PCu67Do0J+brxxC43f4v4opzjgphlrDw==",
   "success": true,
   "projectFilePath": "C:\\Users\\jach2\\Documents\\Pruebas\\Prueba Hahn Software\\delivery-app\\HanhDeliveryBack\\DeliveryAutomationSim\\DeliveryAutomationSim\\DeliveryAutomationSim.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jach2\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "C:\\Users\\jach2\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\jach2\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\jach2\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
     "C:\\Users\\jach2\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
     "C:\\Users\\jach2\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",

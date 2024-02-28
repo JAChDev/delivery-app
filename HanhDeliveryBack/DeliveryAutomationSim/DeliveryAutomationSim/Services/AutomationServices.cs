@@ -3,122 +3,119 @@ using DeliveryAutomationSim.Services.Interfaces;
 
 namespace DeliveryAutomationSim.Services
 {
-    public class AutomationServices : IAutomationService
+    public class AutomationServices
     {
-        private List<Node> nodes;
-        private List<Edge> edges;
-        private List<Connection> connections;
-        public AutomationServices(List<Node> nodes, List<Edge> edges, List<Connection> connections)
-        {
-            this.nodes = nodes;
-            this.edges = edges;
-            this.connections = connections;
 
-            InitializeGraph();
-        }
-
-        private void InitializeGraph()
+        public static (List<Node>,double) AStarAlgorithm(Graph graph, int startNodeId, int targetNodeId)
         {
-            foreach (var connection in connections)
+            Node? startNode = graph.Nodes.Find(node => node.Id == startNodeId);
+            Node? targetNode = graph.Nodes.Find(node => node.Id == targetNodeId);
+
+            //Define open and closed list for A* algorithm
+            var openList = new List<PathNode>();
+            var closedList = new HashSet<Node>();
+
+            //Define initial path
+            var initialPathNode = new PathNode(startNode, 0, CalculateHeuristic(startNode, targetNode), null);
+            openList.Add(initialPathNode);
+
+            //Execute loop searching the best path
+            while (openList.Count > 0)
             {
-                Node firstNode = nodes.Find(node => node.Id == connection.FirstNodeId);
-                Node secondNode = nodes.Find(node => node.Id == connection.SecondNodeId);
+                var currentNode = GetNodeWithLowestTotalCost(openList);
 
-                if (firstNode != null && secondNode != null)
+                //Evaluates if actual node is target node and return path, cost and Time (in process)
+                if (currentNode.Node == targetNode)
                 {
-                    firstNode.Neighbors.Add(secondNode);
-                    secondNode.Neighbors.Add(firstNode);
-                }
-            }
-        }
-        public List<Node> AStar(int startNodeId, int targetNodeId, double realCost, double realTime)
-        {
-            var openSet = new List<Node>();
-            var closedSet = new HashSet<Node>();
-
-            Node startNode = nodes.Find(node => node.Id == startNodeId);
-            Node targetNode = nodes.Find(node => node.Id == targetNodeId);
-
-            startNode.CostFromStart = 0;
-
-            openSet.Add(startNode);
-
-
-            while (openSet.Count > 0)
-            {
-                Node currentNode = FindNodeWithLowestCost(openSet);
-
-                if (currentNode == targetNode)
-                {
-                    return ReconstructPath(startNode, targetNode);
+                    double totalCost = currentNode.CostFromStart;
+                    return (ReconstructPath(currentNode), totalCost);
                 }
 
-                openSet.Remove(currentNode);
-                closedSet.Add(currentNode);
+                openList.Remove(currentNode);
+                closedList.Add(currentNode.Node);
 
-                foreach (var neighbor in currentNode.Neighbors)
+                foreach (var neighborEdge in currentNode.Node.Edges)
                 {
-                    if (closedSet.Contains(neighbor))
+                    var neighborNode = graph.Nodes.Find(node => node.Id == neighborEdge.EndNode);
+                    
+                    //Ignore checked nodes
+                    if (closedList.Contains(neighborNode))
                     {
                         continue;
                     }
 
-                    double tentativeCost = currentNode.CostFromStart + CalculateCost(currentNode, neighbor);
+                    var newCostFromStart = currentNode.CostFromStart + neighborEdge.Cost;
 
-                    if (!openSet.Contains(neighbor) || tentativeCost < neighbor.CostFromStart)
+                    var existingPathNode = openList.Find(node => node.Node == neighborNode);
+                    if (existingPathNode == null || newCostFromStart < existingPathNode.CostFromStart)
                     {
-                        neighbor.CostFromStart = tentativeCost;
-                        neighbor.Parent = currentNode;
-                        if (!openSet.Contains(neighbor))
+                        var heuristicToEnd = CalculateHeuristic(neighborNode, targetNode);
+
+                        var newPathNode = new PathNode(neighborNode, newCostFromStart, heuristicToEnd, currentNode);
+                        if (existingPathNode != null)
                         {
-                            openSet.Add(neighbor);
+                            openList.Remove(existingPathNode);
                         }
+                        openList.Add(newPathNode);
                     }
                 }
             }
-            return null;
+
+            return (new List<Node>(),0);
+
         }
-        private Node FindNodeWithLowestCost(List<Node> nodes)
+
+        private class PathNode
         {
-            Node lowestCostNode = nodes[0];
-            foreach (var node in nodes)
+            public Node Node { get; }
+            public double CostFromStart { get; }
+            public double HeuristicToEnd { get; }
+            public PathNode Parent { get; }
+
+            public PathNode(Node node, double costFromStart, double heuristicToEnd, PathNode parent)
             {
-                if (node.CostFromStart < lowestCostNode.CostFromStart)
+                Node = node;
+                CostFromStart = costFromStart;
+                HeuristicToEnd = heuristicToEnd;
+                Parent = parent;
+            }
+
+            public double TotalCost => CostFromStart + HeuristicToEnd;
+        }
+
+        private static double CalculateHeuristic(Node node, Node targetNode)
+        {
+            //Absolute value between first and second node
+            return Math.Abs(node.Id - targetNode.Id);
+        }
+
+        private static PathNode GetNodeWithLowestTotalCost(List<PathNode> nodeList)
+        {
+            var lowestCost = double.MaxValue;
+            PathNode selectedNode = null;
+            //Loop for evaluate cost and takes lower cost node
+            foreach (var node in nodeList)
+            {
+                if (node.TotalCost < lowestCost)
                 {
-                    lowestCostNode = node;
+                    lowestCost = node.TotalCost;
+                    selectedNode = node;
                 }
             }
-            return lowestCostNode;
+            return selectedNode;
         }
-        private List<Node> ReconstructPath(Node startNode, Node targetNode)
+
+        private static List<Node> ReconstructPath(PathNode endNode)
         {
             var path = new List<Node>();
-            Node currentNode = targetNode;
-            while (currentNode != startNode)
+            var currentNode = endNode;
+            while (currentNode != null)
             {
-                path.Add(currentNode);
+                path.Add(currentNode.Node);
                 currentNode = currentNode.Parent;
             }
-            path.Add(startNode);
             path.Reverse();
             return path;
-        }
-        private double CalculateCost(Node currentNode, Node neighbor)
-        {
-            var connection = connections.FirstOrDefault(c =>
-                (c.FirstNodeId == currentNode.Id && c.SecondNodeId == neighbor.Id) ||
-                (c.FirstNodeId == neighbor.Id && c.SecondNodeId == currentNode.Id));
-
-            if (connection != null)
-            {
-                var edge = edges.FirstOrDefault(e => e.Id == connection.EdgeId);
-
-                if (edge != null)
-                {
-                    return edge.Cost;
-                }
-            }
-            return double.PositiveInfinity; 
         }
 
     }
