@@ -34,6 +34,15 @@ builder.Services.AddHostedService<BackgroundExecutionService>();
 
 builder.Services.AddSignalR();
 
+builder.Services.AddCors(options => options.AddPolicy("CorsPolicy",
+            builder =>
+            {
+                builder.AllowAnyHeader()
+                       .AllowAnyMethod()
+                       .SetIsOriginAllowed((host) => true)
+                       .AllowCredentials();
+            }));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -49,10 +58,13 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.UseCors("CorsPolicy");
+
 app.UseEndpoints(end =>
 {
     end.MapHub<NotificationHub>("/notificationHub");
 });
+
 
 app.MapControllers();
 

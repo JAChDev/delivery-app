@@ -11,6 +11,7 @@ namespace DeliveryAutomationSim.Services
         public readonly IConfiguration Configuration;
         private static Graph? _graph;
         private static string _token;
+        private static object _grid;
 
         public GraphService(IConfiguration configuration)
         {
@@ -35,6 +36,7 @@ namespace DeliveryAutomationSim.Services
 
                     string json = await response.Content.ReadAsStringAsync();
                     var data = JsonConvert.DeserializeObject<Data>(json);
+                    _grid = data;
                     _graph = BuildGraph(data.Nodes, data.Edges, data.Connections);
                 }
                 catch (HttpRequestException e)
@@ -46,10 +48,6 @@ namespace DeliveryAutomationSim.Services
 
         public Graph GetGraph()
         {
-            if (_graph == null)
-            {
-                throw new InvalidOperationException("You need to execute LoadAndBuildGraph function to build the graph.");
-            }
             return _graph;
         }
 
@@ -57,6 +55,12 @@ namespace DeliveryAutomationSim.Services
         {
             return _token;
         }
+
+        public object GetGrid()
+        {
+            return _grid;
+        }
+
         private Graph BuildGraph(List<NodeData> nodesData, List<EdgeData> edgesData, List<ConnectionData> connectionsData)
         {
             Graph graph = new Graph();

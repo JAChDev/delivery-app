@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService } from '../../services/login/login.service';
+import { DeliveryServicesService } from '../../services/delivery/delivery-services.service';
 
 @Component({
   selector: 'app-login',
@@ -16,20 +17,25 @@ export class LoginComponent {
   password: string = '';
   submitted: boolean = false;
 
-  constructor(private router: Router, private loginService:LoginService) {}
+  constructor(private router: Router, private loginService:LoginService, private deliveryServices:DeliveryServicesService) {}
 
-  login(): void {
-    this.loginService.login(this.username, this.password)
-    .then(() => {
+  async login(): Promise<void> {
+    await this.loginService.login(this.username, this.password)
+    .then(async () => {
       this.submitted = true;
+      const token:any = this.loginService.getAuthToken();
+      await this.deliveryServices.sendTokenReceiveGrid(token);
+
       setTimeout(()=>{
         this.router.navigate(['/delivery-center'])
       },1000)
+      
     })
     .catch(error => {
       alert(error.message);
       this.username='';
       this.password='';
-    });  
+    });
+    
   }
 }

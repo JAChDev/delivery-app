@@ -1,4 +1,5 @@
-﻿using DeliveryAutomationSim.Services.Interfaces;
+﻿using DeliveryAutomationSim.Models;
+using DeliveryAutomationSim.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
@@ -16,12 +17,13 @@ namespace DeliveryAutomationSim.Controllers
         }
 
         [HttpPost]
-        public IActionResult TokenAndBuild(string token)
+        public IActionResult TokenAndBuild([FromBody] Token token)
         {
             try
             {
-                _graphService.GetTokenAndBuildGraph(token);
-                return Ok();
+                var tokenString = token.token;
+                _graphService.GetTokenAndBuildGraph(tokenString);
+                return Ok(_graphService.GetGrid());
             }
             catch (Exception e)
             {

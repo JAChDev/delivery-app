@@ -10,7 +10,7 @@ import { Observable, firstValueFrom } from 'rxjs';
 export class LoginService{
   private url:string = "https://localhost:7115/User/Login";
   private authenticated: boolean = false;
-  private authToken:string|null=null;
+  public authToken:string|null=null;
 
   constructor(private http: HttpClient) {}
 

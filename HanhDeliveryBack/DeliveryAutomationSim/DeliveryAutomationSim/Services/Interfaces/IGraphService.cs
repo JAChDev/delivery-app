@@ -7,6 +7,7 @@ namespace DeliveryAutomationSim.Services.Interfaces
         public Task GetTokenAndBuildGraph(string token);
         public Graph GetGraph();
         public string GetToken();
+        public object GetGrid();
 
     }
 }
