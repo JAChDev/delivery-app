@@ -27,7 +27,6 @@ namespace DeliveryAutomationSim.Services
             {
                 try
                 {
-                    //Using burned token for testing purposes
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
                     string servicePath = Configuration.GetValue<string>("HahnSimServices:GetGridData");
                     HttpResponseMessage response = await httpClient.GetAsync(servicePath);

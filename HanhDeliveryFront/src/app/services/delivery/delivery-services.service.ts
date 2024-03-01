@@ -16,7 +16,10 @@ export class DeliveryServicesService {
     const body = { token }
     return firstValueFrom(this.http.post<any>(url, body))
       .then(response => {
-        this.grid = response;
+        if(typeof localStorage !== 'undefined')
+        {
+          localStorage.setItem('graphData', JSON.stringify(response))
+        }
       })
       .catch(e => {
         throw e;
@@ -24,6 +27,10 @@ export class DeliveryServicesService {
   };
 
   getGrid():any {
-    return this.grid;
+    if(typeof localStorage !== 'undefined')
+        {
+          const graph:any = localStorage.getItem('graphData');
+          return JSON.parse(graph);
+        }
   }
 }

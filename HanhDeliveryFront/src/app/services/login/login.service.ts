@@ -9,8 +9,10 @@ import { Observable, firstValueFrom } from 'rxjs';
 })
 export class LoginService{
   private url:string = "https://localhost:7115/User/Login";
-  private authenticated: boolean = false;
-  public authToken:string|null=null;
+  private readonly AUTH_STATE= "unauthorized";
+  public authToken!: string|null;
+  public authorized!:boolean;
+  private readonly AUTH_TOKEN_KEY='authToken';
 
   constructor(private http: HttpClient) {}
 
@@ -18,8 +20,8 @@ export class LoginService{
     const body = { username, password };
     return firstValueFrom(this.http.post<any>(this.url, body))
       .then(response => {
-        this.authenticated=true;
-        this.authToken = response.token;
+        this.setState("authorized");
+        this.setAuthToken(response.token);
       })
       .catch(e => {
         throw e;
@@ -27,16 +29,42 @@ export class LoginService{
   };
 
   logout() {
-    this.authenticated = false;
-    this.authToken = null;
+    this.setAuthToken("");
+    this.setState("unauthorized");
+  }
+
+  private setAuthToken(token: string): void {
+    if(typeof localStorage !== 'undefined')
+    {
+      localStorage.setItem(this.AUTH_TOKEN_KEY, token);
+    }
+  }
+
+  private setState(state: string): void {
+    if(typeof localStorage !== 'undefined'){
+      localStorage.setItem(this.AUTH_STATE, state);
+    }
+  }
+
+  getAuthToken(): string | null {
+    if (typeof localStorage !== undefined){
+      return localStorage.getItem(this.AUTH_TOKEN_KEY)
+    } else {
+      return null
+    }
+  }
+
+  getAuthState(): string | null {
+    if (typeof localStorage !== undefined){
+      return localStorage.getItem(this.AUTH_STATE)
+    } else {
+      return null
+    }
   }
 
   isAuthenticatedUser():boolean {
-    return this.authenticated;
-  }
-
-  getAuthToken():string|null {
-    return this.authToken;
+    this.authorized = (this.getAuthState() == "authorized" && typeof localStorage !== undefined) ? true : false;
+    return this.authorized;
   }
 
 }
