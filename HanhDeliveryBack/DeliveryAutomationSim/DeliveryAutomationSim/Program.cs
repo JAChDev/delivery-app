@@ -1,12 +1,15 @@
 using DeliveryAutomationSim.Services;
 using DeliveryAutomationSim.Services.Interfaces;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
+using DeliveryAutomationSim.Services.Background;
+using DeliveryAutomationSim.Controllers;
+using DeliveryAutomationSim.Services.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -15,13 +18,22 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
 });
 
-builder.Services.AddSingleton<IGraphService, GraphService>();
+// Add services to the container.
+
+builder.Services.AddControllers();
+
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+});
 
 // Create an instance of GraphService class and execute build process in order to use it
-builder.Services.AddSingleton<GraphService>();
+builder.Services.AddSingleton<IGraphService, GraphService>();
+builder.Services.AddSingleton<IAutomationServices, AutomationServices>();
+builder.Services.AddHostedService<BackgroundExecutionService>();
 
-var graphService = builder.Services.BuildServiceProvider().GetRequiredService<GraphService>();
-graphService.LoadAndBuildGraph().GetAwaiter().GetResult();
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,8 +45,16 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
+
 app.UseAuthorization();
+
+app.UseEndpoints(end =>
+{
+    end.MapHub<NotificationHub>("/notificationHub");
+});
 
 app.MapControllers();
 
 app.Run();
+

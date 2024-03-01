@@ -4,8 +4,9 @@ namespace DeliveryAutomationSim.Services.Interfaces
 {
     public interface IGraphService
     {
-        public Task LoadAndBuildGraph();
+        public Task GetTokenAndBuildGraph(string token);
         public Graph GetGraph();
+        public string GetToken();
 
     }
 }

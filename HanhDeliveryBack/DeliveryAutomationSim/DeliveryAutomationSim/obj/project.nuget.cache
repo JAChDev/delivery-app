@@ -1,16 +1,30 @@
 {
   "version": 2,
-  "dgSpecHash": "msRCrDTPlkUw6INFQNV/RvJWuKzxyCinCkmc/PiqQtLs9u6XVJU1O6PCu67Do0J+brxxC43f4v4opzjgphlrDw==",
+  "dgSpecHash": "uHsGef5PXgls/PMdlwnrpF3bM7xMbt2oeS/E+gDWgg+/ErqKFFJctZH5dt0XYIxF4+CQPHwv75Y26Q3ANRwayw==",
   "success": true,
   "projectFilePath": "C:\\Users\\jach2\\Documents\\Pruebas\\Prueba Hahn Software\\delivery-app\\HanhDeliveryBack\\DeliveryAutomationSim\\DeliveryAutomationSim\\DeliveryAutomationSim.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\jach2\\.nuget\\packages\\microsoft.aspnetcore.connections.abstractions\\8.0.2\\microsoft.aspnetcore.connections.abstractions.8.0.2.nupkg.sha512",
+    "C:\\Users\\jach2\\.nuget\\packages\\microsoft.aspnetcore.signalr.common\\8.0.2\\microsoft.aspnetcore.signalr.common.8.0.2.nupkg.sha512",
+    "C:\\Users\\jach2\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\8.0.0\\microsoft.bcl.asyncinterfaces.8.0.0.nupkg.sha512",
     "C:\\Users\\jach2\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\jach2\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\jach2\\.nuget\\packages\\microsoft.extensions.features\\8.0.2\\microsoft.extensions.features.8.0.2.nupkg.sha512",
+    "C:\\Users\\jach2\\.nuget\\packages\\microsoft.extensions.options\\8.0.2\\microsoft.extensions.options.8.0.2.nupkg.sha512",
+    "C:\\Users\\jach2\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512",
     "C:\\Users\\jach2\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
     "C:\\Users\\jach2\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\jach2\\.nuget\\packages\\rabbitmq.client\\6.5.0\\rabbitmq.client.6.5.0.nupkg.sha512",
     "C:\\Users\\jach2\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
     "C:\\Users\\jach2\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
     "C:\\Users\\jach2\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
-    "C:\\Users\\jach2\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+    "C:\\Users\\jach2\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512",
+    "C:\\Users\\jach2\\.nuget\\packages\\system.io.pipelines\\8.0.0\\system.io.pipelines.8.0.0.nupkg.sha512",
+    "C:\\Users\\jach2\\.nuget\\packages\\system.memory\\4.5.5\\system.memory.4.5.5.nupkg.sha512",
+    "C:\\Users\\jach2\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "C:\\Users\\jach2\\.nuget\\packages\\system.text.encodings.web\\8.0.0\\system.text.encodings.web.8.0.0.nupkg.sha512",
+    "C:\\Users\\jach2\\.nuget\\packages\\system.text.json\\8.0.2\\system.text.json.8.0.2.nupkg.sha512",
+    "C:\\Users\\jach2\\.nuget\\packages\\system.threading.channels\\7.0.0\\system.threading.channels.7.0.0.nupkg.sha512"
   ],
   "logs": []
 }

@@ -10,6 +10,7 @@ namespace DeliveryAutomationSim.Services
     {
         public readonly IConfiguration Configuration;
         private static Graph? _graph;
+        private static string _token;
 
         public GraphService(IConfiguration configuration)
         {
@@ -18,14 +19,15 @@ namespace DeliveryAutomationSim.Services
 
 
         // Consume grid service from Hahn Sim Services and creates a graph
-        public async Task LoadAndBuildGraph()
+        public async Task GetTokenAndBuildGraph(string token)
         {
+            _token = token;
             using (var httpClient = new HttpClient())
             {
                 try
                 {
                     //Using burned token for testing purposes
-                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IkNocmlzdGlhbiIsIm5iZiI6MTcwODc5MjQxNywiZXhwIjoxNzA5Mzk3MjE3LCJpYXQiOjE3MDg3OTI0MTd9.nILUTyVSsqHkX1Zek1avZ5UcikVHWoqqfxQvYoMQG7Y");
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
                     string servicePath = Configuration.GetValue<string>("HahnSimServices:GetGridData");
                     HttpResponseMessage response = await httpClient.GetAsync(servicePath);
                     response.EnsureSuccessStatusCode();
@@ -51,6 +53,10 @@ namespace DeliveryAutomationSim.Services
             return _graph;
         }
 
+        public string GetToken()
+        {
+            return _token;
+        }
         private Graph BuildGraph(List<NodeData> nodesData, List<EdgeData> edgesData, List<ConnectionData> connectionsData)
         {
             Graph graph = new Graph();

@@ -26,3 +26,16 @@ C:\Users\jach2\Documents\Pruebas\Prueba Hahn Software\delivery-app\HanhDeliveryB
 C:\Users\jach2\Documents\Pruebas\Prueba Hahn Software\delivery-app\HanhDeliveryBack\DeliveryAutomationSim\DeliveryAutomationSim\obj\Debug\net6.0\DeliveryAutomationSim.genruntimeconfig.cache
 C:\Users\jach2\Documents\Pruebas\Prueba Hahn Software\delivery-app\HanhDeliveryBack\DeliveryAutomationSim\DeliveryAutomationSim\obj\Debug\net6.0\ref\DeliveryAutomationSim.dll
 C:\Users\jach2\Documents\Pruebas\Prueba Hahn Software\delivery-app\HanhDeliveryBack\DeliveryAutomationSim\DeliveryAutomationSim\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\jach2\Documents\Pruebas\Prueba Hahn Software\delivery-app\HanhDeliveryBack\DeliveryAutomationSim\DeliveryAutomationSim\bin\Debug\net6.0\RabbitMQ.Client.dll
+C:\Users\jach2\Documents\Pruebas\Prueba Hahn Software\delivery-app\HanhDeliveryBack\DeliveryAutomationSim\DeliveryAutomationSim\bin\Debug\net6.0\System.Threading.Channels.dll
+C:\Users\jach2\Documents\Pruebas\Prueba Hahn Software\delivery-app\HanhDeliveryBack\DeliveryAutomationSim\DeliveryAutomationSim\bin\Debug\net6.0\Microsoft.AspNetCore.Connections.Abstractions.dll
+C:\Users\jach2\Documents\Pruebas\Prueba Hahn Software\delivery-app\HanhDeliveryBack\DeliveryAutomationSim\DeliveryAutomationSim\bin\Debug\net6.0\Microsoft.AspNetCore.SignalR.Common.dll
+C:\Users\jach2\Documents\Pruebas\Prueba Hahn Software\delivery-app\HanhDeliveryBack\DeliveryAutomationSim\DeliveryAutomationSim\bin\Debug\net6.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\jach2\Documents\Pruebas\Prueba Hahn Software\delivery-app\HanhDeliveryBack\DeliveryAutomationSim\DeliveryAutomationSim\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\jach2\Documents\Pruebas\Prueba Hahn Software\delivery-app\HanhDeliveryBack\DeliveryAutomationSim\DeliveryAutomationSim\bin\Debug\net6.0\Microsoft.Extensions.Features.dll
+C:\Users\jach2\Documents\Pruebas\Prueba Hahn Software\delivery-app\HanhDeliveryBack\DeliveryAutomationSim\DeliveryAutomationSim\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
+C:\Users\jach2\Documents\Pruebas\Prueba Hahn Software\delivery-app\HanhDeliveryBack\DeliveryAutomationSim\DeliveryAutomationSim\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll
+C:\Users\jach2\Documents\Pruebas\Prueba Hahn Software\delivery-app\HanhDeliveryBack\DeliveryAutomationSim\DeliveryAutomationSim\bin\Debug\net6.0\System.IO.Pipelines.dll
+C:\Users\jach2\Documents\Pruebas\Prueba Hahn Software\delivery-app\HanhDeliveryBack\DeliveryAutomationSim\DeliveryAutomationSim\bin\Debug\net6.0\System.Text.Encodings.Web.dll
+C:\Users\jach2\Documents\Pruebas\Prueba Hahn Software\delivery-app\HanhDeliveryBack\DeliveryAutomationSim\DeliveryAutomationSim\bin\Debug\net6.0\System.Text.Json.dll
+C:\Users\jach2\Documents\Pruebas\Prueba Hahn Software\delivery-app\HanhDeliveryBack\DeliveryAutomationSim\DeliveryAutomationSim\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll

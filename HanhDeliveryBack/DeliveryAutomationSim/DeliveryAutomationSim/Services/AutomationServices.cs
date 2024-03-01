@@ -3,10 +3,10 @@ using DeliveryAutomationSim.Services.Interfaces;
 
 namespace DeliveryAutomationSim.Services
 {
-    public class AutomationServices
+    public class AutomationServices:IAutomationServices
     {
-
-        public static (List<Node>,double) AStarAlgorithm(Graph graph, int startNodeId, int targetNodeId)
+        private (List<Node>,double) _fullPath;
+        public IEnumerable<(Node,double)> AStarAlgorithm(Graph graph, int startNodeId, int targetNodeId)
         {
             Node? startNode = graph.Nodes.Find(node => node.Id == startNodeId);
             Node? targetNode = graph.Nodes.Find(node => node.Id == targetNodeId);
@@ -27,8 +27,9 @@ namespace DeliveryAutomationSim.Services
                 //Evaluates if actual node is target node and return path, cost and Time (in process)
                 if (currentNode.Node == targetNode)
                 {
-                    double totalCost = currentNode.CostFromStart;
-                    return (ReconstructPath(currentNode), totalCost);
+                    _fullPath = (ReconstructPath(currentNode), currentNode.CostFromStart);
+                    yield return (currentNode.Node, currentNode.CostFromStart);
+                    yield break;
                 }
 
                 openList.Remove(currentNode);
@@ -59,10 +60,17 @@ namespace DeliveryAutomationSim.Services
                         openList.Add(newPathNode);
                     }
                 }
+                yield return (currentNode.Node, currentNode.CostFromStart);
+
             }
 
-            return (new List<Node>(),0);
+            yield return (null, 0);
 
+        }
+
+        public (List<Node>, double) getFullPathCost()
+        {
+            return _fullPath;
         }
 
         private class PathNode
