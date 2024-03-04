@@ -18,7 +18,7 @@ export class LoginService{
 
   async login(username: string, password: string):Promise<void> {
     const body = { username, password };
-    return firstValueFrom(this.http.post<any>(this.url, body))
+    return await firstValueFrom(this.http.post<any>(this.url, body))
       .then(response => {
         this.setState("authorized");
         this.setAuthToken(response.token);
@@ -65,6 +65,14 @@ export class LoginService{
   isAuthenticatedUser():boolean {
     this.authorized = (this.getAuthState() == "authorized" && typeof localStorage !== undefined) ? true : false;
     return this.authorized;
+  }
+
+  clearLocalStorage():void{
+    localStorage.removeItem("AUTH_TOKEN_KEY")
+    localStorage.removeItem("AUTH_STATE")
+    localStorage.removeItem("graphData")
+
+
   }
 
 }

@@ -2,31 +2,58 @@
     <div class="container">
         <div class="row">
             <div class="col-3">
-                <div class="container sidebar-class">
+                <div class="row">
+                    <div class="container sidebar-class-top">
                         <div class="row">
                             <div class="col">
-                                <h3>Credits</h3>                            
+                                <h3>Credits</h3>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
-                                <input class="form-control" type="text" readonly />
+                                <input class="form-control text-class" type="text" [(ngModel)]="coins" readonly />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col btn-class">
-                                <button class="btn btn-primary">Start Sim</button>
+                                <button class="btn btn-primary" (click)="startSim()">Start Sim</button>
                             </div>
                         </div>        
                         <div class="row">
                             <div class="col btn-class">
-                                <button class="btn btn-primary">Stop Sim</button>
+                                <button class="btn btn-primary" (click)="stopSim()">Stop Sim</button>
                             </div>
-                        </div>             
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label>Simulation Status: {{this.activeSim == true ? "Running" : "Stopped"}}</label>
+                            </div>
+                        </div>   
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="container sidebar-class-bottom">
+                        <div class="row">
+                            <div class="col">
+                                <h3>Accepted Orders</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="list-group">
+                                    @for (item of notificationQueue; track item) {
+                                        <button type="button" class="list-group-item list-group-item-action" (click)="highLightGraph(item.orderId)">
+                                            Order id: {{item.orderId}}, Cost: {{item.cost}}
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-9">
-                <div class="container">
+                <div class="container graph-class">
                     <app-graphcomponent/>
                 </div>
             </div>

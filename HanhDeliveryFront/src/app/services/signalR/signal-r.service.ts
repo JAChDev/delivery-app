@@ -19,15 +19,9 @@ export class SignalRService {
     .catch(err => console.error('Error starting connection with SignalR:', err));
   }
 
-  addNodesNotificationListener(callback: (currentNodeId: number, currentCost: number) => void) {
-    this.hubConnection.on('NodesNotification', (currentNodeId: number, currentCost: number) => {
-      callback(currentNodeId, currentCost);
-    });
-  }
-
-  addOrderAcceptedNotificationListener(callback: (orderId: number, earnings: number, cost: number) => void) {
-    this.hubConnection.on('OrderAcceptedNotification', (orderId: number, earnings: number, cost: number) => {
-      callback(orderId, earnings, cost);
+  addNodesNotificationListener(callback: (bestPath:any[], orderId:number, cost:number, earnings:number) => void) {
+    this.hubConnection.on('NodesNotification', (bestPath:any[],orderId:number,cost:number, earnings:number) => {
+      callback(bestPath, orderId,cost,earnings);
     });
   }
   

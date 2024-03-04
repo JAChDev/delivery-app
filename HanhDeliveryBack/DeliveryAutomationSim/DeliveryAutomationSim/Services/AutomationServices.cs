@@ -6,7 +6,7 @@ namespace DeliveryAutomationSim.Services
     public class AutomationServices:IAutomationServices
     {
         private (List<Node>,double) _fullPath;
-        public IEnumerable<(Node,double)> AStarAlgorithm(Graph graph, int startNodeId, int targetNodeId)
+        public (List<Node>, double) AStarAlgorithm(Graph graph, int startNodeId, int targetNodeId)
         {
             Node? startNode = graph.Nodes.Find(node => node.Id == startNodeId);
             Node? targetNode = graph.Nodes.Find(node => node.Id == targetNodeId);
@@ -28,8 +28,7 @@ namespace DeliveryAutomationSim.Services
                 if (currentNode.Node == targetNode)
                 {
                     _fullPath = (ReconstructPath(currentNode), currentNode.CostFromStart);
-                    yield return (currentNode.Node, currentNode.CostFromStart);
-                    yield break;
+                    return _fullPath;
                 }
 
                 openList.Remove(currentNode);
@@ -60,11 +59,10 @@ namespace DeliveryAutomationSim.Services
                         openList.Add(newPathNode);
                     }
                 }
-                yield return (currentNode.Node, currentNode.CostFromStart);
 
             }
 
-            yield return (null, 0);
+            return (null, 0);
 
         }
 

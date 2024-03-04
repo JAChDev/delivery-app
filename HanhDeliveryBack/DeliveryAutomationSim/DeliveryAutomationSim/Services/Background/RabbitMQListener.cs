@@ -21,6 +21,7 @@ namespace DeliveryAutomationSim.Services
         private readonly IAutomationServices _automationServices = new AutomationServices { };
         private readonly IGraphService _graphService;
         private readonly IHubContext<NotificationHub> _hubContext;
+        private int _transporter;
 
 
 
@@ -65,39 +66,73 @@ namespace DeliveryAutomationSim.Services
         public void ProcessMessage(string message)
         {
             Order data = JsonConvert.DeserializeObject<Order>(message);
-            var FindBestPath = _automationServices.AStarAlgorithm(_graphService.GetGraph(), data.OriginNodeId, data.targetNodeId);
-            foreach (var (currentNode, currentCost) in  FindBestPath)
-            {
-                if (currentNode == null)
-                {
-                    continue;
-                }
-                _hubContext.Clients.All.SendAsync("NodesNotification",currentNode.Id, currentCost);
-            }
-            (List<Node>, double) pathList = _automationServices.getFullPathCost();
+            var token = _graphService.GetToken();
 
-            if(pathList.Item2 < data.value)
+            //Buy transporter if _transporter is empty
+            if(_transporter==null||_transporter==0)
             {
-                var token = _graphService.GetToken();
                 using (var httpClient = new HttpClient())
                 {
                     try
                     {
                         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                        string servicePath = Configuration.GetValue<string>("HahnSimServices:AcceptOrder");
-                        UriBuilder uriBuilder = new UriBuilder(servicePath);
-                        uriBuilder.Query = "orderId=" + data.Id;
-
-                        HttpResponseMessage response = httpClient.PostAsync(uriBuilder.Uri, null).Result;
+                        string servicePath = Configuration.GetValue<string>("HahnSimServices:BuyTransporter");
+                        Uri urlWithParams = new Uri(servicePath + "?positionNodeId=" + data.OriginNodeId);
+                        HttpResponseMessage response = httpClient.PostAsync(urlWithParams, null).Result;
                         response.EnsureSuccessStatusCode();
+                        string json = response.Content.ReadAsStringAsync().Result;
+                        _transporter = Convert.ToInt32(json);
                     }
                     catch (HttpRequestException e)
                     {
                         Console.WriteLine($"Error executing HTTP request: {e.Message}");
                     }
                 }
-                double earnings = data.value - pathList.Item2;
-                _hubContext.Clients.All.SendAsync("OrderAcceptedNotification", data.Id, earnings, pathList.Item2);
+            }
+
+            (List<Node>, double) bestPath = _automationServices.AStarAlgorithm(_graphService.GetGraph(), data.OriginNodeId, data.targetNodeId);
+            List<Node> bestNodes = bestPath.Item1;
+            if (bestPath.Item2 < data.value)
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    try
+                    {
+                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                        string servicePath = Configuration.GetValue<string>("HahnSimServices:AcceptOrder");
+                        Uri urlWithParams = new Uri(servicePath + "?orderId=" + data.Id);
+                        HttpResponseMessage response = httpClient.PostAsync(urlWithParams, null ).Result;
+                        response.EnsureSuccessStatusCode();
+                        string json = response.Content.ReadAsStringAsync().Result;
+                    }
+                    catch (HttpRequestException e)
+                    {
+                        Console.WriteLine($"Error executing HTTP request: {e.Message}");
+                    }
+                }
+
+                //PENDING TO FIX: Add edge time delay to move between nodes
+                //foreach(Node node in bestNodes)
+                //{
+                //    using (var httpClient = new HttpClient())
+                //    {
+                //        try
+                //        {
+                //            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                //            string servicePath = Configuration.GetValue<string>("HahnSimServices:MoveTransporter");
+                //            Uri urlWithParams = new Uri(servicePath + "?transporterId=" + _transporter+"&targetNodeId="+node.Id);
+                //            HttpResponseMessage response = httpClient.PutAsync(urlWithParams, null).Result;
+                //            response.EnsureSuccessStatusCode();
+                //            string json = response.Content.ReadAsStringAsync().Result;
+                //        }
+                //        catch (HttpRequestException e)
+                //        {
+                //            Console.WriteLine($"Error executing HTTP request: {e.Message}");
+                //        }
+                //    }
+                //}
+                _hubContext.Clients.All.SendAsync("NodesNotification", bestNodes, data.Id, bestPath.Item2, data.value-bestPath.Item2);
+
             }
         }
 

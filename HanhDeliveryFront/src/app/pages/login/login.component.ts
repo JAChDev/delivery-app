@@ -24,11 +24,10 @@ export class LoginComponent {
     .then(async () => {
       this.submitted = true;
       const token:any = this.loginService.getAuthToken();
-      await this.deliveryServices.sendTokenReceiveGrid(token);
-
+      const grid = await this.deliveryServices.sendTokenReceiveGrid(token);
       setTimeout(()=>{
         this.router.navigate(['/delivery-center'])
-      },1000)
+      },500)
       
     })
     .catch(error => {

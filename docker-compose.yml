@@ -1,0 +1,36 @@
+services:
+  angular-app:
+    build:
+      context: ./hahn-app-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./hahn-app-frontend:/app
+    depends_on:
+      - hahn-automation-backend
+      - hahn-sim
+
+  dotnet-project1:
+    build:
+      context: ./hahn-automation-backend
+      dockerfile: Dockerfile
+    ports:
+      - "7147:7147"
+    volumes:
+      - ./hahn-automation-backend:/app
+
+  dotnet-project2:
+    build:
+      context: ./hahn-sim
+      dockerfile: Dockerfile
+    ports:
+      - "7115:7115"
+    volumes:
+      - ./hahn-sim:/app
+
+  rabbitmq:
+    image: rabbitmq:latest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
