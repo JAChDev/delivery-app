@@ -2,6 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { response } from 'express';
 import { Observable, firstValueFrom } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { environment as environmentDev } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +12,16 @@ export class DeliveryServicesService {
 
   public grid:object|null=null;
   public coins:number|null=null;
-  constructor(private http: HttpClient) {}
+  private apiUrlAutomation:string;
+  private apiUrlSimulation:string;
+
+  constructor(private http: HttpClient) {
+    this.apiUrlAutomation = environment.production ? environment.apiUrlAutomation : environmentDev.apiUrlAutomation
+    this.apiUrlSimulation = environment.production ? environment.apiUrlSimulation : environmentDev.apiUrlSimulation
+  }
 
   async sendTokenReceiveGrid(token: string|null):Promise<void> {
-    const url:string = `https://localhost:7147/DeliveryAutomation/TokenAndBuild`;
+    const url:string = `${this.apiUrlAutomation}/DeliveryAutomation/TokenAndBuild`;
     const body = { token }
     return await firstValueFrom(this.http.post<any>(url, body))
       .then(response => {
@@ -30,7 +38,7 @@ export class DeliveryServicesService {
         'Authorization': `Bearer ${token}`
       })
     };
-    const url = `https://localhost:7115/User/CoinAmount`;
+    const url = `${this.apiUrlSimulation}/User/CoinAmount`;
     try {
       const response = await firstValueFrom(this.http.get<number>(url, httpOptions));
       return response;
@@ -45,7 +53,7 @@ export class DeliveryServicesService {
         'Authorization': `Bearer ${token}`
       })
     };
-    const url = `https://localhost:7115/Sim/Start`;
+    const url = `${this.apiUrlSimulation}/Sim/Start`;
     await firstValueFrom(this.http.post(url,null,httpOptions))
           .then(() => {console.log("Simulation Started")})
           .catch(e => { throw e })
@@ -57,7 +65,7 @@ export class DeliveryServicesService {
         'Authorization': `Bearer ${token}`
       })
     };
-    const url = `https://localhost:7115/Sim/Stop`;
+    const url = `${this.apiUrlSimulation}/Sim/Stop`;
     await firstValueFrom(this.http.post(url,null,httpOptions))
           .then(() => {console.log("Simulation Stopped")})
           .catch(e => { throw e })
@@ -69,7 +77,7 @@ export class DeliveryServicesService {
         'Authorization': `Bearer ${token}`
       })
     };
-    const url = `https://localhost:7115/Order/GetAllAccepted`;
+    const url = `${this.apiUrlSimulation}/Order/GetAllAccepted`;
     try {
       const response = await firstValueFrom(this.http.get<number>(url, httpOptions));
       return response;

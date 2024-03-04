@@ -1,24 +1,31 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { error } from 'console';
-import { response } from 'express';
 import { Observable, firstValueFrom } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { environment as environmentDev } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService{
-  private url:string = "https://localhost:7115/User/Login";
   private readonly AUTH_STATE= "unauthorized";
   public authToken!: string|null;
   public authorized!:boolean;
   private readonly AUTH_TOKEN_KEY='authToken';
+  private apiUrlAutomation:string;
+  private apiUrlSimulation:string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.apiUrlAutomation = environment.production ? environment.apiUrlAutomation : environmentDev.apiUrlAutomation
+    this.apiUrlSimulation = environment.production ? environment.apiUrlSimulation : environmentDev.apiUrlSimulation
+    
+  }
 
   async login(username: string, password: string):Promise<void> {
     const body = { username, password };
-    return await firstValueFrom(this.http.post<any>(this.url, body))
+    const url = `${this.apiUrlSimulation}/User/Login`;
+    console.log(url)
+    return await firstValueFrom(this.http.post<any>(url, body))
       .then(response => {
         this.setState("authorized");
         this.setAuthToken(response.token);

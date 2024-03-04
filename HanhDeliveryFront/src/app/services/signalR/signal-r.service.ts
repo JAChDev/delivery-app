@@ -1,17 +1,23 @@
 import { Injectable } from '@angular/core';
 import * as signalR from "@microsoft/signalr";
+import { environment } from '../../../environments/environment';
+import { environment as environmentDev } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SignalRService {
   private hubConnection!: signalR.HubConnection;
+  private apiUrlAutomation: string;
 
-  constructor() { }
+  constructor() { 
+    this.apiUrlAutomation = environment.production ? environment.apiUrlAutomation : environmentDev.apiUrlAutomation
+  }
 
   startConnection() {
+    const url = `${this.apiUrlAutomation}/notificationHub`
     this.hubConnection = new signalR.HubConnectionBuilder()
-    .withUrl("https://localhost:7147/notificationHub")
+    .withUrl(url)
     .build();
 
     this.hubConnection.start()
